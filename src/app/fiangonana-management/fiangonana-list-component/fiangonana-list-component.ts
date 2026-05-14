@@ -20,6 +20,7 @@ interface Fiangonana {
   longitude?: number;
   createdAt?: string;
   updatedAt?: string;
+  caution?: number;
 }
 
 interface HydraCollection<T> {
@@ -45,7 +46,7 @@ interface HydraCollection<T> {
 export class FiangonanaListComponent implements OnInit {
   fiangonanas: Fiangonana[] = [];
   error: string | null = null;
-  displayedColumns: string[] = ['nom', 'adresse', 'latitude', 'longitude', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['nom', 'adresse', 'caution', 'latitude', 'longitude', 'createdAt', 'actions'];
   totalItems: number = 0;
 
   map: L.Map | null = null;

@@ -9,6 +9,26 @@ import { MatSelectModule } from '@angular/material/select';
 import { ApiService } from '../http-client/api-service';
 import { HydraCollection } from '../type/hydra-collection';
 
+interface SabbatValidation {
+  id: number;
+  imageName: string;
+  dateSabbat: string;
+  status: string;
+  fiangonana: { nom: string } | null;
+  ambimbolaTeoAloha: number;
+  volaMiditraAndroany: number;
+  volaMiditraA: number;      // ← nouveau
+  volaNivoaka: number;
+  caution: number;           // ← nouveau
+  volaSisaEoAntanana: number;
+  versement: {
+    type: string;
+    reference: string;
+    frais: number;
+    montant: number;
+  } | null;
+}
+
 @Component({
   selector: 'app-sabbat-validation-list',
   standalone: true,
@@ -20,7 +40,7 @@ import { HydraCollection } from '../type/hydra-collection';
   styleUrls: ['./sabbat-validation-list.component.scss']
 })
 export class SabbatValidationListComponent implements OnInit {
-  validations: any[] = [];
+  validations: SabbatValidation[] = [];
   fiangonanas: any[] = [];
   private readonly BASE_UPLOAD_URL = 'https://fva-vitaonyasany.mg/admin-api/public/uploads';
 
@@ -39,7 +59,7 @@ export class SabbatValidationListComponent implements OnInit {
   }
 
   loadValidations(fiangonanaId: number | null = null): void {
-    let url = 'sabbat_validations?order[dateSabbat]=desc';
+    let url = 'sabbat_validations?order[dateSabbat]=desc&status=PENDING';
     if (fiangonanaId) {
       url += `&fiangonana=${fiangonanaId}`;
     }

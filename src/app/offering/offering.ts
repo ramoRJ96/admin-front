@@ -9,6 +9,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core'
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { ApiService } from '../http-client/api-service';
@@ -44,6 +45,7 @@ interface Fiangonana {
     MatInputModule,
     MatNativeDateModule,
     MatExpansionModule,
+    MatPaginatorModule
     // BrowserAnimationsModule
   ],
   templateUrl: './offering.html',
@@ -55,6 +57,10 @@ export class Offering implements OnInit {
   error: string | null = null;
   displayedColumns: string[] = ['type', 'quantities', 'total', 'date', 'fiangonana'];
   searchForm: FormGroup;
+
+  totalItems = 0;
+  pageSize = 30; // Valeur par défaut d'API Platform
+  currentPage = 1;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -88,8 +94,9 @@ export class Offering implements OnInit {
     });
   }
 
-  fetchOfferings(fiangonanaIds: number[] = [], dateDebut?: string, dateFin?: string): void {
+  fetchOfferings(fiangonanaIds: number[] = [], dateDebut?: string, dateFin?: string, page: number = 1): void {
     let queryParams: string[] = [];
+    queryParams.push(`page=${page}`)
 
     if (fiangonanaIds.length > 0) {
       queryParams.push(...fiangonanaIds.map(id => `fiangonana[]=${id}`));
@@ -108,6 +115,7 @@ export class Offering implements OnInit {
     this.apiService.get<HydraCollection<Offerings>>(apiUrl).subscribe({
       next: (data) => {
         this.offerings = data['member'] || [];
+        this.totalItems = data['totalItems'] || 0;
         this.error = null;
         this.cdr.detectChanges();
       },
@@ -124,6 +132,7 @@ export class Offering implements OnInit {
   }
 
   onSearch(): void {
+    this.currentPage = 1;
     const formValue = this.searchForm.value;
     const fiangonanaIds = formValue.fiangonanaIds || [];
     const dateDebut = formValue.dateDebut
@@ -134,10 +143,22 @@ export class Offering implements OnInit {
       ? this.formatDateToYMD(formValue.dateFin)
       : undefined;
 
-    this.fetchOfferings(fiangonanaIds, dateDebut, dateFin);
+    this.fetchOfferings(fiangonanaIds, dateDebut, dateFin, this.currentPage);
   }
 
 
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex + 1;
+    const formValue = this.searchForm.value;
+    
+    this.fetchOfferings(
+      formValue.fiangonanaIds,
+      formValue.dateDebut ? this.formatDateToYMD(formValue.dateDebut) : undefined,
+      formValue.dateFin ? this.formatDateToYMD(formValue.dateFin) : undefined,
+      this.currentPage
+    );
+  }
+  
   resetSearch(): void {
     this.searchForm.reset({ fiangonanaIds: [] });
     this.fetchOfferings();

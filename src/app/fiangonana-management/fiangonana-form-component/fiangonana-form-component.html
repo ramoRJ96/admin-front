@@ -35,6 +35,14 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Caution</mat-label>
+        <input matInput type="number" formControlName="caution">
+        <mat-error *ngIf="fiangonanaForm.get('caution')?.hasError('min')">
+          La caution doit être un nombre positif
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Latitude</mat-label>
         <input matInput type="number" formControlName="latitude">
         <mat-error *ngIf="fiangonanaForm.get('latitude')?.hasError('min') || fiangonanaForm.get('latitude')?.hasError('max')">

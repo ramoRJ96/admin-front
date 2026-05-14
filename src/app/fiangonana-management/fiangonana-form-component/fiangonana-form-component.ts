@@ -22,6 +22,7 @@ interface Fiangonana {
   longitude?: number;
   createdAt?: string;
   updatedAt?: string;
+  caution?: number;
 }
 
 @Component({
@@ -79,7 +80,8 @@ export class FiangonanaFormComponent implements OnInit {
       code: ['', [Validators.required, Validators.maxLength(20)]],
       adresse: ['', [Validators.maxLength(255)]],
       latitude: [null, [Validators.min(-90), Validators.max(90)]],
-      longitude: [null, [Validators.min(-180), Validators.max(180)]]
+      longitude: [null, [Validators.min(-180), Validators.max(180)]],
+      caution: [null, [Validators.min(0)]]
     });
   }
 
@@ -162,7 +164,8 @@ export class FiangonanaFormComponent implements OnInit {
           code: data.code,
           adresse: data.adresse,
           latitude: data.latitude,
-          longitude: data.longitude
+          longitude: data.longitude,
+          caution: data.caution
         });
 
         // Déplacer le marker sur la carte si données présentes
@@ -189,7 +192,8 @@ export class FiangonanaFormComponent implements OnInit {
       latitude: this.fiangonanaForm.value.latitude || null,
       longitude: this.fiangonanaForm.value.longitude || null,
       createdAt: this.isEditMode ? undefined : new Date().toISOString(),
-      updatedAt: this.isEditMode ? new Date().toISOString() : undefined
+      updatedAt: this.isEditMode ? new Date().toISOString() : undefined,
+      caution: this.fiangonanaForm.value.caution || null
     };
 
     const apiUrl = this.isEditMode

@@ -27,29 +27,36 @@
       <mat-card-content>
         <div class="finance-summary">
           <div class="summary-row">
-            <span>Reliquat précédent:</span>
+            <span>Ambim-bola teo aloha:</span>
             <strong>{{ validation.ambimbolaTeoAloha | currency:'MGA':'':'1.0-0' }} Ar</strong>
-          </div>
-          <div class="summary-row text-success">
-            <span>Entrées Sabbat (F):</span>
-            <strong>+ {{ validation.volaMiditraAndroany | currency:'MGA':'':'1.0-0' }} Ar</strong>
-          </div>
-          <div class="summary-row text-success">
-            <span>Entrées Sabbat (A):</span>
-            <strong>+ {{ validation.volaMiditraA | currency:'MGA':'':'1.0-0' }} Ar</strong>
           </div>
           <div class="summary-row text-danger">
             <span>Dépenses locales:</span>
-            <strong>- {{ validation.volaNivoaka | currency:'MGA':'':'1.0-0' }} Ar</strong>
+            <strong> - {{ validation.volaNivoaka | currency:'MGA':'':'1.0-0' }} Ar</strong>
           </div>
+          <div class="summary-row text-success">
+            <span>Vola sisa eo an-tanana:</span>
+            <strong> + {{ validation.volaMiditraAndroany - validation.volaNivoaka | currency:'MGA':'':'1.0-0' }} Ar</strong>
+          </div>
+          <div class="summary-row text-success">
+            <span>Vola miditra A:</span>
+            <strong>+ {{ validation.volaMiditraA | currency:'MGA':'':'1.0-0' }} Ar</strong>
+          </div>
+
           <div class="summary-row text-warning" *ngIf="validation.caution > 0">
             <span>Caution:</span>
-            <strong>- {{ validation.caution | currency:'MGA':'':'1.0-0' }} Ar</strong>
+            <strong> - {{ validation.caution | currency:'MGA':'':'1.0-0' }} Ar</strong>
           </div>
+
+          <div class="summary-row text-warning">
+            <span>RAR:</span>
+            <strong> - {{ validation.rar | currency:'MGA':'':'1.0-0' }} Ar</strong>
+          </div>
+
           <mat-divider></mat-divider>
           <div class="summary-row total">
             <span>Net à verser:</span>
-            <strong class="vibrant-purple">{{ validation.volaMiditraA + validation.caution | currency:'MGA':'':'1.0-0' }} Ar</strong>
+            <strong class="vibrant-purple">{{ validation.volaMiditraA + validation.caution + validation.rar | currency:'MGA':'':'1.0-0' }} Ar</strong>
           </div>
         </div>
 

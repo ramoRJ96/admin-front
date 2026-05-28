@@ -17,9 +17,10 @@ interface SabbatValidation {
   fiangonana: { nom: string } | null;
   ambimbolaTeoAloha: number;
   volaMiditraAndroany: number;
-  volaMiditraA: number;      // ← nouveau
+  volaMiditraA: number;
   volaNivoaka: number;
-  caution: number;           // ← nouveau
+  caution: number;
+  rar: number;
   volaSisaEoAntanana: number;
   versement: {
     type: string;
